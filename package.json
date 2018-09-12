@@ -1,0 +1,16 @@
+{
+  "name": "garage_remote",
+  "version": "0.1.0",
+  "description": "Remote controller service for a motorized garage door.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dusty Lefevre",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.0",
+    "onoff": "^3.2.1"
+  }
+}
