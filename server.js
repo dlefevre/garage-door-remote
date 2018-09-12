@@ -2,13 +2,13 @@
  * server.js
  */
 
-// Load dependencies
+// Set up frontend
 var express = require('express');
+var app = express();
 var ejs = require('ejs');
 
-// Load engines
-var app = express();
 app.set('view engine', 'ejs');
+app.use(express.static('static'));
 
 // Set up gpio
 var Gpio = require('onoff').Gpio;
