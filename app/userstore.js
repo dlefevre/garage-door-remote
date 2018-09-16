@@ -6,6 +6,9 @@ const fs = require('fs');
 const hash = require('create-hash');
 const config = require('../config');
 const logger = require('./logger.js');
+const NodeCache = require('node-cache');
+
+var userCache = new NodeCache({stdTTL: config.application.userstore.cache_ttl});
 
 class User {
     constructor(username, seed, digest) {
@@ -20,10 +23,25 @@ class User {
     }
 }
 
-// Perform lookup in userstore on filesystem and return a user object if found
+// Try to find the user in the cache or load if from disk if necessary
 find = (username, callback) => {
-    logger.info("Looking up " + username);
-    var path = config.application.userstore + '/' + username;
+    userCache.get(username, (err, obj) => {
+        if(!err && obj) {
+            logger.debug('Retrieving user %s from cache' + username + ' from cache');
+            callback(null, obj);
+        } else {
+            logger.debug('Retrieving user ' + username + ' from the userstore');
+            load(username, (_err, _obj) => {
+                userCache.set(username, _obj);
+                callback(_err, _obj);
+            });
+        }
+    });
+}
+
+// Restore the userobject from disk
+load = (username, callback) => {
+    var path = config.application.userstore.path + '/' + username;
     
     if(fs.existsSync(path)) {
         var content = fs.readFileSync(path, 'utf8');
@@ -36,6 +54,7 @@ find = (username, callback) => {
         var obj = new User(username, seed, digest);
         callback(null, obj);
     } else {
+        logger.debug('Could not locate user ' + username + ' in the userstore');
         callback(null);
     }
 }

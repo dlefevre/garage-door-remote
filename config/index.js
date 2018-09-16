@@ -3,7 +3,11 @@ const config = {};
 // Application configuration
 config.application = {
     port: process.env.GDR_PORT || 8080,
-    userstore: '/home/pi/.gdr/users'
+    userstore: {
+        path: '/home/pi/.gdr/users',
+        cache_ttl: 60
+    },
+    loglevel: 'debug'
 }
 
 // Setup of the GPIO pins

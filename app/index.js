@@ -6,7 +6,6 @@
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
 const fs = require('fs');
 const hash = require('create-hash');
 
@@ -25,15 +24,15 @@ const ejs = require('ejs');
 
 // Set up middleware
 app.set('view engine', 'ejs');
+app.use((req, res, next) => {
+    res.removeHeader("X-Powered-By");
+    next();
+});
 app.use(express.static('static'));
 app.use(session({ secret: secret }));
 app.use(bodyParser.urlencoded({ extended: false}));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use((req, res, next) => {
-    res.removeHeader("X-Powered-By");
-    next();
-});
 app.use('/', (req, res, next) => {
     if(req.isAuthenticated() || req.url === '/login') {
         next();
