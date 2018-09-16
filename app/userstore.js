@@ -22,6 +22,7 @@ class User {
 
 // Perform lookup in userstore on filesystem and return a user object if found
 find = (username, callback) => {
+    logger.info("Looking up " + username);
     var path = config.application.userstore + '/' + username;
     
     if(fs.existsSync(path)) {

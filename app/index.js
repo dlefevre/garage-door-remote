@@ -30,6 +30,23 @@ app.use(session({ secret: secret }));
 app.use(bodyParser.urlencoded({ extended: false}));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use((req, res, next) => {
+    res.removeHeader("X-Powered-By");
+    next();
+});
+app.use('/', (req, res, next) => {
+    if(req.isAuthenticated() || req.url === '/login') {
+        next();
+    } else {
+        if(req.method === 'POST') {
+            res.status('401');
+            res.set('WWW-Authenticate', ' FormBased');
+            res.json({result: 'failed', error: 'Unauthorized'});
+        } else {
+            res.redirect('/login');
+        }
+    }
+});
 
 // Login page
 app.get('/login', (req, res) => {
@@ -42,13 +59,13 @@ app.post('/login', passport.authenticate('local', {
 
 // Default get
 app.get("/", (req, res) => {
-  res.render("index");
+    res.render("index");
 });
 
 // Twiddle (push the controller button)
 app.post("/trigger", (req, res) => {
-  gpio.trigger();
-  return res.send('OK');
+    gpio.trigger();
+    return res.json({result: 'ok'});
 });
 
 module.exports = app;

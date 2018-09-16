@@ -37,9 +37,9 @@ passport.serializeUser((user, done) => {
 
 // Deserialization
 passport.deserializeUser((username, done) => {
-    user.find(username, (err, user) => {
+    userstore.find(username, (err, user) => {
         done(err, user);
-    })
+    });
 });
 
 module.exports = passport;
