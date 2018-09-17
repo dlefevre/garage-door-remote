@@ -18,11 +18,11 @@ passport.use(new LocalStrategy (
             }
             if(!user) { 
                 logger.warn('(SEC) Unknown user: ' + username);
-                return done(null, false);
+                return done(null, false, {message: 'Invalid username or password.'});
             }
             if(!user.verify(password)) {
                 logger.warn('(SEC) Invalid password for user: ' + username);
-                return done(null, false);
+                return done(null, false, {message: 'Invalid username or password.'});
             }
             logger.info('(SEC) ' + username + ' logged on.')
             return done(null, user);

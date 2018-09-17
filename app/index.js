@@ -6,6 +6,7 @@
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
+const flash = require('connect-flash');
 const fs = require('fs');
 const hash = require('create-hash');
 
@@ -31,6 +32,7 @@ app.use((req, res, next) => {
 app.use(express.static('static'));
 app.use(session({ secret: secret }));
 app.use(bodyParser.urlencoded({ extended: false}));
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use('/', (req, res, next) => {
@@ -49,12 +51,17 @@ app.use('/', (req, res, next) => {
 
 // Login page
 app.get('/login', (req, res) => {
-    res.render('login');
+    res.render('login', {message: req.flash('error')});
 });
 app.post('/login', passport.authenticate('local', {
     successRedirect: '/',
-    failureRedirect: '/login'
+    failureRedirect: '/login',
+    failureFlash: true
 }));
+app.get('/logout', function(req, res){
+  req.logout();
+  res.redirect('/login');
+});
 
 // Default get
 app.get("/", (req, res) => {

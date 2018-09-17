@@ -9,3 +9,12 @@ $("#confirmTrigger").click(function() {
         alert("An error occured")
     });
 });
+
+/*
+ * https://bootsnipp.com/snippets/z85Qd
+ */
+$(document).ready(function(){
+  $('.nav-button').click(function(){
+    $('body').toggleClass('nav-open');
+  });
+});

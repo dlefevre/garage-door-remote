@@ -13,32 +13,58 @@
     <!-- Specific stylesheets -->
     <link rel="stylesheet" href="css/style.css" >
 
-    <title>Login (GDR)</title> 
+    <title>Garage Door Remote</title> 
   </head>
   <body>
-    <div class="jumbotron">
-      <h1 class="display-4">Garagedoor remote</h1>
-      <p class="lead">Login</p>
-    </div>
+    <header class="head-main">
+      <div class="navbar navbar-dark bg-dark box-shadow">
+        <div class="container d-flex justify-content-between widen">
+          <a href="#" class="navbar-brand d-flex align-items-center">
+            <strong>Garage Door Remote</strong>
+          </a>
+          <a class="nav-button ml-auto mr-4"><span id="nav-icon3"><span></span><span></span><span></span><span></span></span></a>
+        </div>
+      </div> <!--navbar end-->
+      
+      <div class="fixed-top main-menu">
+        <div class="flex-center p-5">
+          <ul class="nav flex-column">
+            <li class="nav-item delay-1"><a class="nav-link" href="/login">Login</a></li>
+          </ul>
+        </div>
+      </div> <!--main-menu end-->
+    </header>
 
-    <form action="/login" method="post">
-      <div>
-        <label>Username:</label>
-        <input type="text" name="username"/>
+    <div class="container">
+      <div class="row" id="pwd-container">
+        <div class="col-md-4"></div>
+        
+        <div class="col-md-4">
+          <section class="login-form">
+            <form method="post" action="/login" role="login">
+              <!--img src="http://i.imgur.com/RcmcLv4.png" class="img-responsive" alt="" /-->
+              <h1>Login</h1>
+              <% if (message && message != "") { %>
+                  <p class="text-danger"><%= message %></p>
+              <% } %>
+              <input type="text" class="form-control" placeholder="Username" name="username"> 
+              <input type="password" class="form-control" placeholder="Password" name="password"> 
+              
+              <div class="pwstrength_viewport_progress"></div>
+              
+              <button type="submit" name="go" class="btn btn-lg btn-primary btn-block">Sign in</button>        
+            </form>
+          </section>
+        </div>
       </div>
-      <div>
-        <label>Password:</label>
-        <input type="password" name="password"/>
-      </div>
-      <div>
-        <input type="submit" value="Log In"/>
-      </div>
-    </form>
+    </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <script src="js/main.js" type="application/javascript"></script>
   </body>
 </html>
