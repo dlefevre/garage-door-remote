@@ -18,3 +18,44 @@ $(document).ready(function(){
     $('body').toggleClass('nav-open');
   });
 });
+
+/*
+ * Long polling for door status on main page
+ */
+function toggleState(state) {
+    $('.state-box').hide();
+    $('#state-' + state).show();
+}
+
+function pollDirect(callback) {
+    $.ajax({
+        url: '/state', 
+        datatype: 'json', 
+        success: function(data) {
+            toggleState(data.state);
+        }
+    });
+    callback();             
+}
+
+$(document).ready(function() {
+    if($('#status').length) {
+        function poll() {
+            setTimeout(function() {
+                if(document.hasFocus()) {
+                    $.ajax({
+                        url: '/state', 
+                        datatype: 'json', 
+                        success: function(data) {
+                            toggleState(data.state);
+                            poll();
+                        }
+                    })
+                } else {
+                    poll();
+                }
+            }, 1000);
+        }
+        pollDirect(poll);
+    }
+});

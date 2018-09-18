@@ -9,6 +9,27 @@
     margin-bottom: 15px !important;
 }
 
+.status {
+    width: 300;
+    height: 180;
+}
+
+#state-open {
+    display: none;
+}
+
+#state-closed {
+    display: none;
+}
+
+#state-moving {
+    display: none;
+}
+
+#state-unknown {
+    display: block;
+}
+
 /*
  * https://bootsnipp.com/snippets/z85Qd
  */

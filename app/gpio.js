@@ -31,7 +31,7 @@ getState = () => {
 
     if(open && !closed)  return 'open';
     if(!open && closed)  return 'closed';
-    if(!open && !closed) return 'in motion';
+    if(!open && !closed) return 'moving';
     return 'unknown';
 }
 

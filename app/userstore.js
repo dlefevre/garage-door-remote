@@ -27,7 +27,7 @@ class User {
 find = (username, callback) => {
     userCache.get(username, (err, obj) => {
         if(!err && obj) {
-            logger.debug('Retrieving user %s from cache' + username + ' from cache');
+            logger.debug('Retrieving user ' + username + ' from cache');
             callback(null, obj);
         } else {
             logger.debug('Retrieving user ' + username + ' from the userstore');

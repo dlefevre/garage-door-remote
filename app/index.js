@@ -4,50 +4,17 @@
 
 // Imports
 const express = require('express');
-const session = require('express-session');
-const bodyParser = require('body-parser');
-const flash = require('connect-flash');
-const fs = require('fs');
-const hash = require('create-hash');
 
 const config = require('../config');
 const gpio = require('./gpio.js');
 const passport = require('./authentication.js');
 const logger = require('./logger.js');
 
-// Generate a secret
-const machineid = fs.readFileSync('/etc/machine-id', 'ascii')
-const secret = hash('sha256').update(machineid).digest("hex");
-
 // Set up app
 const app = express();
 const ejs = require('ejs');
-
-// Set up middleware
 app.set('view engine', 'ejs');
-app.use((req, res, next) => {
-    res.removeHeader("X-Powered-By");
-    next();
-});
-app.use(express.static('static'));
-app.use(session({ secret: secret }));
-app.use(bodyParser.urlencoded({ extended: false}));
-app.use(flash());
-app.use(passport.initialize());
-app.use(passport.session());
-app.use('/', (req, res, next) => {
-    if(req.isAuthenticated() || req.url === '/login') {
-        next();
-    } else {
-        if(req.method === 'POST') {
-            res.status('401');
-            res.set('WWW-Authenticate', ' FormBased');
-            res.json({result: 'failed', error: 'Unauthorized'});
-        } else {
-            res.redirect('/login');
-        }
-    }
-});
+require('./middleware.js').init(app);
 
 // Login page
 app.get('/login', (req, res) => {
@@ -63,6 +30,12 @@ app.get('/logout', function(req, res){
   res.redirect('/login');
 });
 
+// Get door state
+app.get("/state", (req, res) => {
+    var state = gpio.getState();
+    return res.json({outcome: 'success', state: state});
+})
+
 // Default get
 app.get("/", (req, res) => {
     res.render("index");
@@ -71,7 +44,7 @@ app.get("/", (req, res) => {
 // Twiddle (push the controller button)
 app.post("/trigger", (req, res) => {
     gpio.trigger();
-    return res.json({result: 'ok'});
+    return res.json({outcome: 'success'});
 });
 
 module.exports = app;

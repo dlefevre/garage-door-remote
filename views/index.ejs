@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <base href="/">
+    <link rel="icon" href="/images/favicon.png" sizes="16x16 32x32" type="image/png">
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -44,12 +45,24 @@
         <div class="col-md-4">
           <section class="login-form">
             <div class="box">
-              <!--
-              <div class="alert alert-success text-left" role="alert"><strong>Controller status:</strong> online</div>
-              <div class="alert alert-primary text-left" role="alert"><strong>Door status:</strong> closed</div>
-              -->
-              <img src="images/door_closed.png" class="img-scaled">
-              <p class="text-center text-success font-weight-bold">Closed</p>
+              <div id="status">
+                <div id="state-open" class="state-box">
+                  <img src="images/door_open.png" class="img-scaled">
+                  <p class="text-center text-danger font-weight-bold">Open</p>
+                </div>
+                <div id="state-closed" class="state-box">
+                  <img src="images/door_closed.png" class="img-scaled">
+                  <p class="text-center text-success font-weight-bold">Closed</p>
+                </div>
+                <div id="state-moving" class="state-box">
+                  <img src="images/door_motion.png" class="img-scaled">
+                  <p class="text-center text-warning font-weight-bold">Moving or partially open</p>
+                </div>
+                <div id="state-unknown" class="state-box">
+                  <img src="images/door_unknown.png" class="img-scaled">
+                  <p class="text-center text-secondary font-weight-bold">Unknown</p>
+                </div>
+              </div>
               <hr class="style4">
               <div class="text-center">
                 <button type="button" class="btn btn-xxl btn-primary btn-block" data-toggle="modal" data-target="#triggerModal">Trigger</button>
@@ -59,17 +72,6 @@
         </div>
       </div>
     </div>
-
-<!--
-    <div class="container">
-      <div class="alert alert-success" role="alert">Remote controle online</div>
-      <div class="alert alert-primary" role="alert">Door closed</div>
-      <hr class="style4">
-      <div class="text-center">
-        <button type="button" class="btn btn-primary btn-xxl" data-toggle="modal" data-target="#triggerModal">Trigger</button>
-      </div>
-    </div>
--->
 
     <!-- Modal -->
     <div class="modal fade" id="triggerModal" tabindex="-1" role="dialog" aria-labelledby="triggerModalLabel" aria-hidden="true">
