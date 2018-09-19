@@ -53,7 +53,8 @@
               
               <div class="pwstrength_viewport_progress"></div>
               
-              <button type="submit" name="go" class="btn btn-lg btn-primary btn-block">Sign in</button>        
+              <button type="submit" name="go" class="btn btn-lg btn-primary btn-block">Sign in</button>
+              <input type="hidden" name="_csrf" value="<%= csrftoken %>">
             </form>
           </section>
         </div>

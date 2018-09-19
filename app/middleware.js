@@ -5,7 +5,8 @@
 const express = require('express');
 const session = require('express-session');
 const helmet = require('helmet');
-const favicon = require('serve-favicon');
+const csrf = require('csurf');
+const rateLimit = require('express-rate-limit');
 
 const bodyParser = require('body-parser');
 const flash = require('connect-flash');
@@ -29,12 +30,17 @@ init = (app) => {
             scriptSrc: ["'self'", 'code.jquery.com', 'cdnjs.cloudflare.com', 'maxcdn.bootstrapcdn.com']
         }
     }));
+    app.use(rateLimit( {
+        windowMs: 60 * 1000, // Due to active polling, use a small window
+        max: 180             // Set the maximum to aprox. 3 requests/sec.
+    }));
     app.use(express.static('static'));
     app.use(session({ 
         secret: secret,
         name: '_sid'
     }));
     app.use(bodyParser.urlencoded({ extended: false}));
+    app.use(csrf());
     app.use(flash());
     app.use(passport.initialize());
     app.use(passport.session());

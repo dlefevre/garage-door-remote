@@ -5,6 +5,8 @@
 // Imports
 const express = require('express');
 
+const slowdown = require('express-slow-down');
+
 const config = require('../config');
 const gpio = require('./gpio.js');
 const passport = require('./authentication.js');
@@ -16,11 +18,21 @@ const ejs = require('ejs');
 app.set('view engine', 'ejs');
 require('./middleware.js').init(app);
 
+// Slow down policy for login
+const speedLimitLogin = slowdown({
+    windowMs: 30 * 60 * 1000,
+    delayAfter: 5,
+    delayMs: 500
+});
+
 // Login page
 app.get('/login', (req, res) => {
-    res.render('login', {message: req.flash('error')});
+    res.render('login', {
+        message: req.flash('error'), 
+        csrftoken: req.csrfToken()
+    });
 });
-app.post('/login', passport.authenticate('local', {
+app.post('/login', speedLimitLogin, passport.authenticate('local', {
     successRedirect: '/',
     failureRedirect: '/login',
     failureFlash: true
@@ -38,7 +50,9 @@ app.get("/state", (req, res) => {
 
 // Default get
 app.get("/", (req, res) => {
-    res.render("index");
+    res.render("index", {
+        csrftoken: req.csrfToken()
+    });
 });
 
 // Twiddle (push the controller button)

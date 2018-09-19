@@ -2,8 +2,17 @@
  * Post request for triggering the garage door motor
  */
 $("#confirmTrigger").click(function() {
-    $.post("trigger", function(data, status) {
-        $("#triggerModal").modal("toggle");
+    var csrftoken = $('meta[name="_csrf"]').attr('content');
+    $.ajax({
+        url: '/trigger',
+        type: 'POST',
+        beforeSend: (xhr) => {
+            xhr.setRequestHeader('CSRF-Token', csrftoken);
+        },
+        success: (data, status) => {
+            $("#triggerModal").modal("toggle");    
+        }
+
     })
     .fail(function() {
         alert("An error occured")
