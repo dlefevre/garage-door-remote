@@ -7,6 +7,7 @@ const hash = require('create-hash');
 const config = require('../config');
 const logger = require('./logger.js');
 const NodeCache = require('node-cache');
+const path = require('path');
 
 var userCache = new NodeCache({stdTTL: config.application.userstore.cache_ttl});
 
@@ -41,10 +42,10 @@ find = (username, callback) => {
 
 // Restore the userobject from disk
 load = (username, callback) => {
-    var path = config.application.userstore.path + '/' + username;
+    var filepath = path.join(config.application.userstore.path, username);
     
-    if(fs.existsSync(path)) {
-        var content = fs.readFileSync(path, 'utf8');
+    if(fs.existsSync(filepath)) {
+        var content = fs.readFileSync(filepath, 'utf8');
         var [seed, digest] = content.trim().split('/');
         if(!seed || !digest) {
             callback(new Error("Invalid userfile for user: " + username));

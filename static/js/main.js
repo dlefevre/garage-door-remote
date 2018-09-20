@@ -15,7 +15,8 @@ $("#confirmTrigger").click(function() {
 
     })
     .fail(function() {
-        alert("An error occured")
+        $("#triggerModal").modal("toggle");   
+        $('#alerts').append($('#connectError').clone());
     });
 });
 
@@ -34,6 +35,10 @@ $(document).ready(function(){
 function toggleState(state) {
     $('.state-box').hide();
     $('#state-' + state).show();
+    if(!state) {
+        $('#state-unknown').show();
+    }
+
 }
 
 function pollDirect(callback) {
@@ -55,8 +60,12 @@ $(document).ready(function() {
                     $.ajax({
                         url: '/state', 
                         datatype: 'json', 
-                        success: function(data) {
+                        success: (data) => {
                             toggleState(data.state);
+                            poll();
+                        },
+                        error: () => {
+                            toggleState('unknown');
                             poll();
                         }
                     })

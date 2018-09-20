@@ -11,7 +11,6 @@ const rateLimit = require('express-rate-limit');
 const bodyParser = require('body-parser');
 const flash = require('connect-flash');
 const fs = require('fs');
-const path = require('path');
 const hash = require('create-hash');
 
 const config = require('../config');

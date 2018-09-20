@@ -7,7 +7,7 @@ config.application = {
         path: '/home/pi/.gdr/users',
         cache_ttl: 60
     },
-    loglevel: 'debug'
+    loglevel: 'info'
 }
 
 // Setup of the GPIO pins

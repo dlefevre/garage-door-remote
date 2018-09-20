@@ -14,7 +14,7 @@ const doorClosedPin = new Gpio(config.gpio.door_closed_pin, 'in');
 process.on('SIGINT', () => {
     triggerPin.unexport();
     doorOpenPin.unexport();
-    doorClosePin.unexport();
+    doorClosedPin.unexport();
 });
 
 // Trigger the door

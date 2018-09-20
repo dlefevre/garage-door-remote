@@ -54,6 +54,11 @@ app.get("/", (req, res) => {
         csrftoken: req.csrfToken()
     });
 });
+// Default get
+app.get("/about", (req, res) => {
+    res.render("about", require('./sysinfo.js'));
+});
+
 
 // Twiddle (push the controller button)
 app.post("/trigger", (req, res) => {
