@@ -9,9 +9,9 @@ const prompt = require('prompt-sync')();
 const fs = require('fs');
 const path = require('path');
 
-// Seed for pasword hash
-var seed = randomstring.generate({
-  length: 8,
+// Salt for pasword hash
+var salt = randomstring.generate({
+  length: 16,
   charset: 'alphanumeric'
 });
 
@@ -40,10 +40,10 @@ if(password.length > 0) {
 }
 
 // Generate hash
-var digest = hash('sha256').update(seed).update(password).digest("hex");
+var digest = hash('sha256').update(salt).update(password).digest("hex");
 
 // Create new file
-fs.writeFileSync(path.join(config.application.userstore.path, username), seed + "/" + digest, {mode: 0o600});
+fs.writeFileSync(path.join(config.application.userstore.path, username), salt + "/" + digest, {mode: 0o600});
 if(printpassword) {
     console.log('Your password: ' + password);
 }
