@@ -21,6 +21,8 @@ const machineid = fs.readFileSync('/etc/machine-id', 'ascii')
 const secret = hash('sha256').update(machineid).digest("hex");
 
 init = (app) => {
+    app.enable('trust proxy');
+    
     app.use(helmet());
     app.use(helmet.contentSecurityPolicy({
         directives: {
