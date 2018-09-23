@@ -28,9 +28,9 @@ config.gpio = {
 }
 
 // Disable GPIO connection if requested
-if(process.env.GDR_ENABLED) {
-    gdr_enabled = process.env.GPIO_ENABLED.toLowerCase();
-    if(gdr_enabled === 'no' || gdr_enabled === 'false') {
+if(process.env.GPIO_ENABLED) {
+    gpio_enabled = process.env.GPIO_ENABLED.toLowerCase();
+    if(gpio_enabled === 'no' || gpio_enabled === 'false') {
         config.gpio.enabled = false;
     }
 }
