@@ -8,10 +8,10 @@ const config = {};
 
 // Application configuration
 config.application = {
-    port: process.env.GDR_PORT || 8080,
-    host: process.env.GDR_HOST || 'localhost',
+    port: process.env.PORT || 8080,
+    host: process.env.HOST || 'localhost',
     userstore: {
-        path: process.env.GDR_USERSTORE || os.homedir() + '/.gdr/users',
+        path: process.env.USERSTORE || os.homedir() + '/.gdr/users',
         cache_ttl: 60
     },
     loglevel: 'info'
@@ -28,7 +28,7 @@ config.gpio = {
 
 // Disable GPIO connection if requested
 if(process.env.GDR_ENABLED) {
-    gdr_enabled = process.env.GDR_ENABLED.toLowerCase();
+    gdr_enabled = process.env.GPIO_ENABLED.toLowerCase();
     if(gdr_enabled === 'no' || gdr_enabled === 'false') {
         config.gpio.enabled = false;
     }
