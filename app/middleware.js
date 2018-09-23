@@ -22,6 +22,9 @@ const logger = require('./logger.js');
 const machineid = fs.readFileSync('/etc/machine-id', 'ascii')
 const secret = hash('sha256').update(machineid).digest("hex");
 
+// Cookie security
+var cookieSecurity = config.application.secured ? { secure: true, httpOnly: true } : { httpOnly: true };
+
 init = (app) => {
     app.enable('trust proxy');
     
@@ -41,7 +44,8 @@ init = (app) => {
     app.use(express.static('static'));
     app.use(session({ 
         secret: secret,
-        name: '_sid'
+        name: '_sid',
+        cookie: cookieSecurity
     }));
     app.use(bodyParser.urlencoded({ extended: false}));
     app.use(csrf());

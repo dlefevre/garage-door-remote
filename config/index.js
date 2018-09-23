@@ -10,6 +10,7 @@ const config = {};
 config.application = {
     port: process.env.PORT || 8080,
     host: process.env.HOST || 'localhost',
+    secured: true,
     userstore: {
         path: process.env.USERSTORE || os.homedir() + '/.gdr/users',
         cache_ttl: 60
@@ -31,6 +32,14 @@ if(process.env.GDR_ENABLED) {
     gdr_enabled = process.env.GPIO_ENABLED.toLowerCase();
     if(gdr_enabled === 'no' || gdr_enabled === 'false') {
         config.gpio.enabled = false;
+    }
+}
+
+// Disable security if so requrested
+if(process.env.SECURED) {
+    secured = process.env.SECURED.toLowerCase();
+    if(secured === 'no' || secured == 'false') {
+        config.application.secured = false;
     }
 }
 
