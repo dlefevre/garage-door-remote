@@ -9,22 +9,24 @@ const logger = require("./logger.js");
 const userstore = require("./userstore.js");
 
 // Configure strategy
-passport.use(new LocalStrategy (
-    (username, password, done) => {
+passport.use(new LocalStrategy ({
+        passReqToCallback: true
+    },
+    (req, username, password, done) => {
         userstore.find(username, (err, user) => {
             if(err) {
-                logger.error('Error during password validation for user ' + username);
+                logger.error('(security event) Error during password validation for user ' + username);
                 return done(err);
             }
             if(!user) { 
-                logger.warn('(SEC) Unknown user: ' + username);
+                logger.warn('(security event) Failed login from ' + req.clientIp + ', unknown username ' + username);
                 return done(null, false, {message: 'Invalid username or password.'});
             }
             if(!user.verify(password)) {
-                logger.warn('(SEC) Invalid password for user: ' + username);
+                logger.warn('(security event) Failed login from ' + req.clientIp + ', password invalid for user ' + username);
                 return done(null, false, {message: 'Invalid username or password.'});
             }
-            logger.info('(SEC) ' + username + ' logged on.')
+            logger.info('(security event) Successful login from ' + req.clientIp + ', for user ' + username);
             return done(null, user);
         });
     }

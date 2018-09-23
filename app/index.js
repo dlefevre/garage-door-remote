@@ -8,7 +8,7 @@ const express = require('express');
 const slowdown = require('express-slow-down');
 
 const config = require('../config');
-const gpio = require('./gpio.js');
+const gpio = config.gpio.enabled ? require('./gpio.js') : require('./gpio_stub.js');
 const passport = require('./authentication.js');
 const logger = require('./logger.js');
 
@@ -38,6 +38,7 @@ app.post('/login', speedLimitLogin, passport.authenticate('local', {
     failureFlash: true
 }));
 app.get('/logout', function(req, res){
+  logger.info('(security event) Logout requested from ' + req.clientIp + ' by user ' + req.user.username);
   req.logout();
   res.redirect('/login');
 });
@@ -62,6 +63,8 @@ app.get("/about", (req, res) => {
 
 // Twiddle (push the controller button)
 app.post("/trigger", (req, res) => {
+    logger.info('(application event) Garage door triggered from ' + req.clientIp + ' by user ' + req.user.username);
+
     gpio.trigger();
     return res.json({outcome: 'success'});
 });

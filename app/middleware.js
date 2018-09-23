@@ -7,6 +7,7 @@ const session = require('express-session');
 const helmet = require('helmet');
 const csrf = require('csurf');
 const rateLimit = require('express-rate-limit');
+const requestIp = require('request-ip');
 
 const bodyParser = require('body-parser');
 const flash = require('connect-flash');
@@ -15,6 +16,7 @@ const hash = require('create-hash');
 
 const config = require('../config');
 const passport = require('./authentication.js');
+const logger = require('./logger.js');
 
 // Generate a secret
 const machineid = fs.readFileSync('/etc/machine-id', 'ascii')
@@ -23,6 +25,7 @@ const secret = hash('sha256').update(machineid).digest("hex");
 init = (app) => {
     app.enable('trust proxy');
     
+    app.use(requestIp.mw());
     app.use(helmet());
     app.use(helmet.contentSecurityPolicy({
         directives: {
@@ -42,6 +45,13 @@ init = (app) => {
     }));
     app.use(bodyParser.urlencoded({ extended: false}));
     app.use(csrf());
+    app.use(function (err, req, res, next) {
+      if (err.code !== 'EBADCSRFTOKEN') 
+        return next(err);
+
+      logger.error('(security event) Invalid CSRF token for request from ' + req.clientIp);
+      res.redirect('/login');
+    });
     app.use(flash());
     app.use(passport.initialize());
     app.use(passport.session());
@@ -50,6 +60,8 @@ init = (app) => {
             next();
         } else {
             if(req.method === 'POST') {
+                logger.error('(security event) Unauthenticated POST request from ' + req.clientIp);
+
                 res.status('401');
                 res.set('WWW-Authenticate', ' FormBased');
                 res.json({outcome: 'failure', error: 'Unauthorized'});

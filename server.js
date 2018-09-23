@@ -3,10 +3,10 @@
  */
 
 const app = require("./app");
-const config = require("./config")
+const config = require("./config");
 
 // Listen for incomming connections
-app.listen(config.application.port, () => {
-  console.log("Server is listening on port " + config.application.port);
+app.listen(config.application.port, config.application.host, () => {
+  console.log('Server is listening on host ' + config.application.host + ' and port ' + config.application.port);
 });
 

@@ -6,6 +6,7 @@ const config = require('../config');
 const logger = require('./logger.js');
 
 const Gpio = require('onoff').Gpio;
+
 const triggerPin = new Gpio(config.gpio.trigger_pin, 'out');
 const doorOpenPin = new Gpio(config.gpio.door_open_pin, 'in');
 const doorClosedPin = new Gpio(config.gpio.door_closed_pin, 'in');
@@ -19,7 +20,6 @@ process.on('SIGINT', () => {
 
 // Trigger the door
 trigger = () => {
-    logger.info('Garage door motor was triggered');
     triggerPin.writeSync(1);
     setTimeout(() => { triggerPin.writeSync(0) }, config.gpio.trigger_time);
 }
