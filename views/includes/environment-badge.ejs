@@ -1,0 +1,12 @@
+    <div class="environment-badge">
+        <%
+            var environment = (process.env.NODE_ENV) ? process.env.NODE_ENV : 'development';
+            var badgeType = 'secondary';
+            if(environment === 'production')
+                badgeType = 'success';
+            if(environment === 'staging') {
+                badgeType = 'warning';
+            }
+        %>
+        <span class="badge badge-pill badge-<%= badgeType %>"><%= environment %></span>
+    </div>
