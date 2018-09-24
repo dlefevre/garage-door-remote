@@ -4,6 +4,7 @@
 
 const express = require('express');
 const session = require('express-session');
+const FileStore = require('session-file-store')(session);
 const helmet = require('helmet');
 const csrf = require('csurf');
 const rateLimit = require('express-rate-limit');
@@ -43,9 +44,17 @@ init = (app) => {
     }));
     app.use(express.static('static'));
     app.use(session({ 
+        store: new FileStore({
+            ttl: config.application.sessionstore.ttl,
+            path: config.application.sessionstore.path,
+            retries: 3,
+            logFn: logger.debug
+        }),
         secret: secret,
         name: '_sid',
-        cookie: cookieSecurity
+        cookie: cookieSecurity,
+        resave: true,
+        saveUninitialized: false
     }));
     app.use(bodyParser.urlencoded({ extended: false}));
     app.use(csrf());

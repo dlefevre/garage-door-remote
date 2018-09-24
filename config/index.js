@@ -3,6 +3,7 @@
  */ 
 
 const os = require('os');
+const path = require('path');
 
 const config = {};
 
@@ -12,10 +13,15 @@ config.application = {
     host: process.env.HOST || 'localhost',
     secured: true,
     userstore: {
-        path: process.env.USERSTORE || os.homedir() + '/.gdr/users',
+        path: process.env.USERSTORE || path.join(os.homedir(), '.gdr/users'),
         cache_ttl: 60
     },
-    loglevel: 'info'
+    sessionstore: {
+        path: process.env.SESSIONSTORE || path.join(os.homedir(), '.gdr/sessions'),
+        ttl: 3600 * 24 * 90,
+        purgeTime: 1800
+    },
+    loglevel: process.env.LOGLEVEL || 'info'
 }
 
 // Setup of the GPIO pins

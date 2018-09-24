@@ -40,6 +40,7 @@ app.post('/login', speedLimitLogin, passport.authenticate('local', {
 app.get('/logout', function(req, res){
   logger.info('(security event) Logout requested from ' + req.clientIp + ' by user ' + req.user.username);
   req.logout();
+  req.session.destroy();
   res.redirect('/login');
 });
 

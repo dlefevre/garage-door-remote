@@ -5,7 +5,8 @@
   "repository": "https://github.com/dlefevre/garage-door-remote.git",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "HOST=0.0.0.0 GPIO_ENABLED=no SECURED=no LOGLEVEL=debug npx nodemon server.js"
   },
   "author": "Dusty Lefevre",
   "license": "Unlicense",
@@ -17,6 +18,7 @@
     "onoff": "^3.2.1",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
+    "session-file-store": "^1.2.0",
     "create-hash": "^1.2.0",
     "winston": "^3.1.0",
     "node-cache": "^4.2.0",
