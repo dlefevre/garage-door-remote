@@ -24,7 +24,8 @@ const machineid = fs.readFileSync('/etc/machine-id', 'ascii')
 const secret = hash('sha256').update(machineid).digest("hex");
 
 // Cookie security
-var cookieSecurity = config.application.secured ? { secure: true, httpOnly: true } : { httpOnly: true };
+const maxAge = 10 * 365.2425 * 24 * 3600 * 1000;
+const cookieSecurity = config.application.secured ? { secure: true, httpOnly: true, maxAge: maxAge } : { httpOnly: true };
 
 init = (app) => {
     app.enable('trust proxy');
