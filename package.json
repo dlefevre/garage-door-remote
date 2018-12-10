@@ -30,7 +30,8 @@
     "express-slow-down": "^1.0.1",
     "randomstring": "^1.1.5",
     "prompt-sync": "^4.1.6",
-    "request-ip": "^2.1.1"
+    "request-ip": "^2.1.1",
+    "event-stream": "3.3.4"
   },
   "devDependencies": {
     "nodemon": "latest",
