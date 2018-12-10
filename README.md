@@ -8,6 +8,7 @@ cd /opt/production
 pm2 start
 cd /opt/staging
 pm2 start
+pm2 save
 ```
 
 ## Adding users
@@ -16,9 +17,11 @@ Users are stored in *~node_ops/.gdr/users* and can be added or updated by execut
 cd /opt/production
 node adduser.js
 ```
+
 ## Cleaning the session store
 Sessions details are persisted in a filesystem session store located at *~node_ops/.gdr/sessions*. Session expire only after 90 days by default. The purge-sessions.js job will remove all unauthenticated sessions older than 30 minutes. Schedule (four times a day for now) this job by executing:
 ```
 cd /opt/production
 pm2 start purge-sessions.js --cron '0 0,6,12,18 * * *'
+pm2 save
 ```
